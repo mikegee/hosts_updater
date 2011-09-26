@@ -1,0 +1,5 @@
+*.swp
+HOSTS
+hosts.block
+hosts.zip
+*.log

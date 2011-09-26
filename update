@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo # add an empty line to the log
+
+wget --timestamping http://winhelp2002.mvps.org/hosts.zip
+
+unzip -afoq hosts.zip
+
+sed -e '/localhost/ d' \
+    -e 's/ *#.*//'     \
+    -e 's/[ ^I]*$//g'  \
+    -e '/^\s*$/ d'     \
+    -e 's/  /\t/'      \
+    HOSTS > hosts.block
+
+
+cp hosts.block /etc/hosts.block
+
+cd /etc
+
+[[ -s hosts.local ]] || cp hosts hosts.local
+
+cat hosts.local hosts.block > hosts
