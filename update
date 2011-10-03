@@ -1,10 +1,15 @@
 #!/bin/bash
 
-echo # add an empty line to the log
+# cd into this directory, so the log file can be a relative path
+cd "$( dirname "$0" )"
 
-wget --timestamping http://winhelp2002.mvps.org/hosts.zip
+LOGFILE=update.log
 
-unzip -afoq hosts.zip
+echo >> $LOGFILE # add an empty line to the log
+
+wget --timestamping http://winhelp2002.mvps.org/hosts.zip >> $LOGFILE
+
+unzip -afoq hosts.zip >> $LOGFILE
 
 sed -e '/localhost/ d' \
     -e 's/ *#.*//'     \
