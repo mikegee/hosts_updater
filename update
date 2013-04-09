@@ -7,22 +7,22 @@ LOGFILE=update.log
 
 echo >> $LOGFILE # add an empty line to the log
 
-wget --timestamping http://winhelp2002.mvps.org/hosts.zip >> $LOGFILE
+/usr/local/bin/wget --timestamping http://winhelp2002.mvps.org/hosts.zip >> $LOGFILE
+
+[[ -f HOSTS ]] || touch -t 200001010101 HOSTS
 
 unzip -afoq hosts.zip >> $LOGFILE
 
-sed -e '/localhost/ d' \
-    -e 's/ *#.*//'     \
-    -e 's/[ ^I]*$//g'  \
-    -e '/^\s*$/ d'     \
-    -e 's/  /\t/'      \
+sed -e '/localhost/d' \
+    -e 's/ *#.*//'    \
+    -e 's/[ ^I]*$//g' \
+    -e '/^\s*$/d'     \
     HOSTS > hosts.block
-
 
 cp hosts.block /etc/hosts.block
 
 cd /etc
 
-[[ -s hosts.local ]] || cp hosts hosts.local
+[[ -f hosts.local ]] || cp hosts hosts.local
 
 cat hosts.local hosts.block > hosts
